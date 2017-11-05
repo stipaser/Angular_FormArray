@@ -1,0 +1,85 @@
+<h2>Hero Detail</h2>
+<h3><i>Just a FormControl</i></h3>
+<form [formGroup]="heroForm">
+<div class="form-group">
+    <label class="center-block">Name:
+        <input class="form-control" formControlName="name">
+    </label>
+</div>
+
+<div formArrayName="secretLairs" class="well well-lg">
+    <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i" >
+        <!-- The repeated address template -->
+    
+        <div class="form-group">
+        <label class="center-block">Street:
+          <input class="form-control" formControlName="street">
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="center-block">City:
+          <input class="form-control" formControlName="city">
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="center-block">State:
+          <select class="form-control" formControlName="state">
+              <option *ngFor="let state of states" [value]="state">{{state}}</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="center-block">Zip Code:
+          <input class="form-control" formControlName="zip">
+        </label>
+      </div>
+
+    </div>
+</div>
+   
+
+      <div class="form-group radio">
+        <h4>Super power:</h4>
+        <label class="center-block"><input type="radio" formControlName="power" value="flight">Flight</label>
+        <label class="center-block"><input type="radio" formControlName="power" value="x-ray vision">X-ray vision</label>
+        <label class="center-block"><input type="radio" formControlName="power" value="strength">Strength</label>
+      </div>
+      <div class="checkbox">
+        <label class="center-block">
+          <input type="checkbox" formControlName="sidekick">I have a sidekick.
+        </label>
+
+      </div>
+
+      <div *ngFor="let ct of chisesTypes">
+          <label class="center-block"><input type="radio" formControlName="choisesTypes" value="{{ct.value}}" > {{ ct.label }}</label>
+      </div>
+<div *ngIf="onCheckChoisesTypes()">
+    <button (click)="addChoice()" type="button">Add choice</button>
+      <div formArrayName="myArr" class="well well-lg">
+        <div *ngFor="let c of myArr.controls; let i=index"  (change)="onChangeChoice(i)">
+            <input type="text" [formControlName]="i">
+            
+
+            <div *ngIf="c.invalid && (c.dirty || c.touched)"  class="alert alert-danger">
+             <div *ngIf="c.errors.required" style="font-size: 10px;">
+                Choise is required.
+              </div>
+             </div>
+             <button (click)="removeChoice(i)" type="button">remove choice {{ i + 1 }}</button>
+             <button (click)="EditChoice(i)" type="button">edit choice {{ i + 1 }}</button>
+        </div>
+      </div>
+
+  </div>
+
+</form>
+
+<button (click)="addLair()" type="button">Add a Secret Lair</button>
+
+<button (click)="onClick()" type="button">My Form</button>
+
+
+<p>Form value: {{ heroForm.value | json }}</p>
+<p>Form status: {{ heroForm.status | json }}</p>
+<p>Name value: {{ heroForm.get('name').value }}</p>
